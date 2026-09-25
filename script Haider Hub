@@ -1,4 +1,4 @@
--- Delta Executor Script - حيدر هوب (Plantum Military Academy) - Final One-Time Airdrop Edition
+-- Delta Executor Script - حيدر هوب (Plantum Military Academy) - Final Perfect Edition
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -22,12 +22,12 @@ local StatsLabel = Instance.new("TextLabel")
 StatsLabel.Name = "StatsLabel"
 StatsLabel.Parent = ScreenGui
 StatsLabel.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-StatsLabel.BorderColor3 = Color3.fromRGB(0, 255, 128)
+StatsLabel.BorderColor3 = Color3.fromRGB(0, 160, 255)
 StatsLabel.BorderSizePixel = 1
 StatsLabel.Position = UDim2.new(1, -160, 0.02, 0)
 StatsLabel.Size = UDim2.new(0, 150, 0, 35)
 StatsLabel.Font = Enum.Font.SourceSansBold
-StatsLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
+StatsLabel.TextColor3 = Color3.fromRGB(0, 160, 255)
 StatsLabel.TextSize = 13
 StatsLabel.Text = "FPS: 60 | Ping: 0ms"
 
@@ -52,27 +52,31 @@ end)
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Name = "ToggleBtn"
 ToggleButton.Parent = ScreenGui
-ToggleButton.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-ToggleButton.BorderColor3 = Color3.fromRGB(0, 255, 128)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(10, 40, 100)
+ToggleButton.BorderColor3 = Color3.fromRGB(0, 160, 255)
 ToggleButton.BorderSizePixel = 2
 ToggleButton.Position = UDim2.new(0.02, 0, 0.12, 0)
 ToggleButton.Size = UDim2.new(0, 55, 0, 55)
 ToggleButton.Font = Enum.Font.SourceSansBold
-ToggleButton.Text = "📦"
-ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.Text = "⚡"
+ToggleButton.TextColor3 = Color3.fromRGB(0, 190, 255)
 ToggleButton.TextSize = 24
 ToggleButton.Active = true
 ToggleButton.Draggable = true
+
+local UICornerBtn = Instance.new("UICorner")
+UICornerBtn.CornerRadius = UDim.new(1, 0)
+UICornerBtn.Parent = ToggleButton
 
 -- الإطار الرئيسي للسكربت
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
-MainFrame.BorderColor3 = Color3.fromRGB(0, 255, 128)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 28)
+MainFrame.BorderColor3 = Color3.fromRGB(0, 160, 255)
 MainFrame.BorderSizePixel = 2
-MainFrame.Position = UDim2.new(0.05, 0, 0.1, 0)
-MainFrame.Size = UDim2.new(0, 520, 0, 540)
+MainFrame.Position = UDim2.new(0.05, 0, 0.08, 0)
+MainFrame.Size = UDim2.new(0, 580, 0, 600)
 MainFrame.Active = true
 MainFrame.Draggable = true
 MainFrame.Visible = true
@@ -80,20 +84,20 @@ MainFrame.Visible = true
 -- عنوان القائمة
 local Title = Instance.new("TextLabel")
 Title.Parent = MainFrame
-Title.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+Title.BackgroundColor3 = Color3.fromRGB(10, 35, 80)
 Title.BorderSizePixel = 0
-Title.Size = UDim2.new(1, 0, 0, 50)
+Title.Size = UDim2.new(1, 0, 0, 55)
 Title.Font = Enum.Font.SourceSansBold
-Title.Text = "حيدر هوب - النسخة النهائية المحدثة"
-Title.TextColor3 = Color3.fromRGB(0, 255, 128)
-Title.TextSize = 16
+Title.Text = "حيدر هوب - النسخة النهائية المطورة"
+Title.TextColor3 = Color3.fromRGB(0, 190, 255)
+Title.TextSize = 17
 
 -- زر إغلاق القائمة الداخلي (X)
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Parent = Title
 CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 CloseBtn.BorderSizePixel = 0
-CloseBtn.Position = UDim2.new(0.92, 0, 0.15, 0)
+CloseBtn.Position = UDim2.new(0.93, 0, 0.18, 0)
 CloseBtn.Size = UDim2.new(0, 35, 0, 35)
 CloseBtn.Font = Enum.Font.SourceSansBold
 CloseBtn.Text = "X"
@@ -111,40 +115,40 @@ end)
 -- نظام القوائم الجانبية (Tabs)
 local TabSelectorFrame = Instance.new("Frame")
 TabSelectorFrame.Parent = MainFrame
-TabSelectorFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+TabSelectorFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
 TabSelectorFrame.BorderSizePixel = 0
-TabSelectorFrame.Position = UDim2.new(0, 0, 0, 50)
-TabSelectorFrame.Size = UDim2.new(0, 150, 1, -50)
+TabSelectorFrame.Position = UDim2.new(0, 0, 0, 55)
+TabSelectorFrame.Size = UDim2.new(0, 160, 1, -55)
 
 local ContentFrame = Instance.new("Frame")
 ContentFrame.Parent = MainFrame
-ContentFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+ContentFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 28)
 ContentFrame.BorderSizePixel = 0
-ContentFrame.Position = UDim2.new(0, 150, 0, 50)
-ContentFrame.Size = UDim2.new(1, -150, 1, -50)
+ContentFrame.Position = UDim2.new(0, 160, 0, 55)
+ContentFrame.Size = UDim2.new(1, -160, 1, -55)
 
 local function createTab(name, posIndex)
 	local tabBtn = Instance.new("TextButton")
 	tabBtn.Parent = TabSelectorFrame
-	tabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+	tabBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
 	tabBtn.BorderSizePixel = 0
-	tabBtn.Position = UDim2.new(0, 0, 0, (posIndex - 1) * 55)
-	tabBtn.Size = UDim2.new(1, 0, 0, 50)
+	tabBtn.Position = UDim2.new(0, 0, 0, (posIndex - 1) * 60)
+	tabBtn.Size = UDim2.new(1, 0, 0, 55)
 	tabBtn.Font = Enum.Font.SourceSansBold
 	tabBtn.Text = name
 	tabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-	tabBtn.TextSize = 14
+	tabBtn.TextSize = 15
 	return tabBtn
 end
 
 local Tab1Btn = createTab("المميزات الأساسية", 1)
-local Tab2Btn = createTab("قائمة المراقبة واللاعبين", 2)
+local Tab2Btn = createTab("قائمة اللاعبين والمراقبة", 2)
 
 local Container1 = Instance.new("ScrollingFrame")
 Container1.Parent = ContentFrame
 Container1.BackgroundTransparency = 1
 Container1.Size = UDim2.new(1, 0, 1, 0)
-Container1.CanvasSize = UDim2.new(0, 0, 2.5, 0)
+Container1.CanvasSize = UDim2.new(0, 0, 3.5, 0)
 Container1.Visible = true
 
 local Container2 = Instance.new("ScrollingFrame")
@@ -169,20 +173,20 @@ local function createFeatureToggle(parent, name, posY, text, callback)
 	label.Parent = parent
 	label.BackgroundTransparency = 1
 	label.Position = UDim2.new(0.05, 0, 0, posY)
-	label.Size = UDim2.new(0, 180, 0, 35)
+	label.Size = UDim2.new(0, 200, 0, 38)
 	label.Font = Enum.Font.SourceSansBold
 	label.Text = text
 	label.TextColor3 = Color3.fromRGB(255, 255, 255)
-	label.TextSize = 13
+	label.TextSize = 14
 	label.TextXAlignment = Enum.TextXAlignment.Left
 
 	local btn = Instance.new("TextButton")
 	btn.Name = name
 	btn.Parent = parent
 	btn.BackgroundColor3 = Color3.fromRGB(150, 30, 30)
-	btn.BorderColor3 = Color3.fromRGB(0, 255, 128)
-	btn.Position = UDim2.new(0.58, 0, 0, posY)
-	btn.Size = UDim2.new(0, 115, 0, 35)
+	btn.BorderColor3 = Color3.fromRGB(0, 160, 255)
+	btn.Position = UDim2.new(0.60, 0, 0, posY)
+	btn.Size = UDim2.new(0, 120, 0, 38)
 	btn.Font = Enum.Font.SourceSansBold
 	btn.Text = "إيقاف [❌]"
 	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -193,7 +197,7 @@ local function createFeatureToggle(parent, name, posY, text, callback)
 		state = not state
 		if state then
 			btn.Text = "تشغيل [✔️]"
-			btn.BackgroundColor3 = Color3.fromRGB(30, 150, 60)
+			btn.BackgroundColor3 = Color3.fromRGB(20, 130, 60)
 		else
 			btn.Text = "إيقاف [❌]"
 			btn.BackgroundColor3 = Color3.fromRGB(150, 30, 30)
@@ -204,42 +208,30 @@ local function createFeatureToggle(parent, name, posY, text, callback)
 end
 
 local noclipActive = false
-local flyActive = false
 local customSpeed = 16
 local speedActive = false
 local autoMathActive = false
-local autoAirdropOnce = false
-local playerListActive = true
-local handledAirdrops = {} -- لتسجيل الدروبات التي تم التعامل معها مرة واحدة فقط
+local instantPromptActive = false
+local joyFlyActive = false
+local joyFlySpeed = 50
 
--- 1. الانتقال والفتح التلقائي لكل دروب جديد مرة واحدة فقط
-createFeatureToggle(Container1, "AirdropOnceToggle", 15, "انتقال وفتح كل دروب (مرة واحدة)", function(state)
-	autoAirdropOnce = state
-	if not state then
-		handledAirdrops = {}
-	end
+-- 1. زر تشغيل وإيقاف أخذ الأشياء بضغطة زر وحدة (Prompt الفوري)
+createFeatureToggle(Container1, "InstantPromptToggle", 15, "أخذ الأشياء/الدروع (ضغطة وحدة)", function(state)
+	instantPromptActive = state
 end)
 
 task.spawn(function()
 	while true do
-		task.wait(0.5)
-		if autoAirdropOnce then
+		task.wait(0.2)
+		if instantPromptActive then
 			pcall(function()
 				local Character = LocalPlayer.Character
 				if Character and Character:FindFirstChild("HumanoidRootPart") then
-					for _, obj in pairs(workspace:GetDescendants()) do
-						if obj:IsA("Model") and (string.lower(obj.Name):find("airdrop") or string.lower(obj.Name):find("drop") or string.lower(obj.Name):find("صندوق")) then
-							if not handledAirdrops[obj] then
-								local targetPart = obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
-								if targetPart then
-									-- الانتقال للدروب الجديد مرة واحدة
-									Character.HumanoidRootPart.CFrame = targetPart.CFrame + Vector3.new(0, 3, 0)
-									handledAirdrops[obj] = true
-								end
-							end
-							-- محاولة فتح الدروب فوراً
-							for _, prompt in pairs(obj:GetDescendants()) do
-								if prompt:IsA("ProximityPrompt") then
+					for _, prompt in pairs(workspace:GetDescendants()) do
+						if prompt:IsA("ProximityPrompt") then
+							local part = prompt.Parent
+							if part and part:IsA("BasePart") then
+								if (Character.HumanoidRootPart.Position - part.Position).Magnitude <= (prompt.MaxActivationDistance or 20) then
 									fireproximityprompt(prompt)
 								end
 							end
@@ -251,8 +243,8 @@ task.spawn(function()
 	end
 end)
 
--- 2. حل المعادلة مرة واحدة فقط عند فتح الدروب الجوي
-createFeatureToggle(Container1, "MathToggle", 65, "حل المعادلة مرة واحدة للفتح", function(state)
+-- 2. حل المعادلة والتأكيد التلقائي
+createFeatureToggle(Container1, "MathToggle", 70, "حل المعادلة والتأكيد التلقائي", function(state)
 	autoMathActive = state
 end)
 
@@ -282,6 +274,7 @@ task.spawn(function()
 										box.Text = tostring(ans)
 									end
 								end
+								task.wait(0.1)
 								for _, btn in pairs(gui.Parent:GetDescendants()) do
 									if btn:IsA("TextButton") and (string.lower(btn.Text):find("تأكيد") or string.lower(btn.Text):find("confirm") or string.lower(btn.Text):find("حل")) then
 										for _, connection in pairs(getconnections(btn.MouseButton1Click)) do
@@ -302,8 +295,8 @@ task.spawn(function()
 	end
 end)
 
--- 3. التحكم بالسرعة
-createFeatureToggle(Container1, "SpeedToggle", 115, "تفعيل سرعة إضافية", function(state)
+-- 3. تفعيل السرعة
+createFeatureToggle(Container1, "SpeedToggle", 125, "تفعيل سرعة إضافية", function(state)
 	speedActive = state
 	local Character = LocalPlayer.Character
 	if Character and Character:FindFirstChild("Humanoid") then
@@ -313,10 +306,10 @@ end)
 
 local speedBox = Instance.new("TextBox")
 speedBox.Parent = Container1
-speedBox.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
-speedBox.BorderColor3 = Color3.fromRGB(0, 255, 128)
-speedBox.Position = UDim2.new(0.05, 0, 0, 165)
-speedBox.Size = UDim2.new(0, 290, 0, 35)
+speedBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+speedBox.BorderColor3 = Color3.fromRGB(0, 160, 255)
+speedBox.Position = UDim2.new(0.05, 0, 0, 180)
+speedBox.Size = UDim2.new(0, 310, 0, 38)
 speedBox.Font = Enum.Font.SourceSansBold
 speedBox.Text = "50 (اكتب السرعة واضغط Enter)"
 speedBox.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -334,21 +327,82 @@ speedBox.FocusLost:Connect(function(enterPressed)
 	end
 end)
 
--- 4. ميزة الطيران والمشي معاً باتجاه الكاميرا والجويستك
-createFeatureToggle(Container1, "FlyToggle", 215, "ميزة الطيران (Fly + Walk)", function(state)
-	flyActive = state
+-- 4. طيران الجوستيك للهاتف (Joystick Fly)
+createFeatureToggle(Container1, "JoyFlyToggle", 235, "طيران بالجوستيك (حرك العصا للطيارة ✈️)", function(state)
+	joyFlyActive = state
+	local Character = LocalPlayer.Character
+	if not Character or not Character:FindFirstChild("HumanoidRootPart") then return end
+	
+	if joyFlyActive then
+		local hrp = Character.HumanoidRootPart
+		local humanoid = Character:FindFirstChildOfClass("Humanoid")
+		
+		local bv = Instance.new("BodyVelocity")
+		bv.Name = "JoyFlyVel"
+		bv.Parent = hrp
+		bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+		bv.Velocity = Vector3.new(0, 0, 0)
+		
+		local bg = Instance.new("BodyGyro")
+		bg.Name = "JoyFlyGyro"
+		bg.Parent = hrp
+		bg.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+		bg.CFrame = hrp.CFrame
+		
+		task.spawn(function()
+			while joyFlyActive and Character and Character:FindFirstChild("HumanoidRootPart") do
+				RunService.RenderStepped:Wait()
+				local camCF = Camera.CFrame
+				local moveDir = humanoid and humanoid.MoveDirection or Vector3.new(0,0,0)
+				
+				if moveDir.Magnitude > 0 then
+					bv.Velocity = ((camCF.LookVector * moveDir.Z) + (camCF.RightVector * moveDir.X) + Vector3.new(0, moveDir.Y, 0)).Unit * joyFlySpeed
+				else
+					bv.Velocity = Vector3.new(0, 0, 0) -- يقف في مكانه إذا لم تحرك الجوستيك
+				end
+				bg.CFrame = camCF
+			end
+			if bv then bv:Destroy() end
+			if bg then bg:Destroy() end
+		end)
+	else
+		if Character.HumanoidRootPart:FindFirstChild("JoyFlyVel") then
+			Character.HumanoidRootPart.JoyFlyVel:Destroy()
+		end
+		if Character.HumanoidRootPart:FindFirstChild("JoyFlyGyro") then
+			Character.HumanoidRootPart.JoyFlyGyro:Destroy()
+		end
+	end
 end)
 
--- 5. ميزة اختراق الجدران (Noclip)
-createFeatureToggle(Container1, "NoclipToggle", 265, "اختراق الجدران (Noclip)", function(state)
+local joyFlySpeedBox = Instance.new("TextBox")
+joyFlySpeedBox.Parent = Container1
+joyFlySpeedBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+joyFlySpeedBox.BorderColor3 = Color3.fromRGB(0, 160, 255)
+joyFlySpeedBox.Position = UDim2.new(0.05, 0, 0, 285)
+joyFlySpeedBox.Size = UDim2.new(0, 310, 0, 38)
+joyFlySpeedBox.Font = Enum.Font.SourceSansBold
+joyFlySpeedBox.Text = "50 (اكتب سرعة الطيران واضغط Enter)"
+joyFlySpeedBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+joyFlySpeedBox.TextSize = 13
+
+joyFlySpeedBox.FocusLost:Connect(function(enterPressed)
+	if enterPressed then
+		local num = tonumber(joyFlySpeedBox.Text)
+		if num then
+			joyFlySpeed = num
+		end
+	end
+end)
+
+-- 5. اختراق الجدران (Noclip)
+createFeatureToggle(Container1, "NoclipToggle", 345, "اختراق الجدران (Noclip)", function(state)
 	noclipActive = state
 end)
 
--- نظام التشغيل الموحد (الطيران والمشي معاً ويتجه نحو الكاميرا بسلاسة)
 RunService.Stepped:Connect(function()
 	local Character = LocalPlayer.Character
 	if not Character then return end
-	local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
 	local Humanoid = Character:FindFirstChild("Humanoid")
 
 	if noclipActive then
@@ -362,55 +416,34 @@ RunService.Stepped:Connect(function()
 	if speedActive and Humanoid then
 		Humanoid.WalkSpeed = customSpeed
 	end
+end)
 
-	if flyActive and HumanoidRootPart and Camera then
-		local bv = HumanoidRootPart:FindFirstChild("HaidarFlyVelocity")
-		local bg = HumanoidRootPart:FindFirstChild("HaidarFlyGyro")
-		if not bv then
-			bv = Instance.new("BodyVelocity")
-			bv.Name = "HaidarFlyVelocity"
-			bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-			bv.Parent = HumanoidRootPart
-			bg = Instance.new("BodyGyro")
-			bg.Name = "HaidarFlyGyro"
-			bg.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
-			bg.Parent = HumanoidRootPart
-		end
-		
-		local moveDir = Vector3.new()
-		if Humanoid then
-			moveDir = Humanoid.MoveDirection
-		end
-		
-		if moveDir.Magnitude == 0 then
-			if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Camera.CFrame.LookVector end
-			if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Camera.CFrame.LookVector end
-			if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Camera.CFrame.RightVector end
-			if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Camera.CFrame.RightVector end
-		else
-			local joyX = Humanoid.MoveDirection:Dot(Camera.CFrame.RightVector)
-			local joyZ = Humanoid.MoveDirection:Dot(Camera.CFrame.LookVector)
-			moveDir = (Camera.CFrame.LookVector * joyZ) + (Camera.CFrame.RightVector * joyX)
-		end
-		
-		bv.Velocity = moveDir * 55
-		bg.CFrame = Camera.CFrame
-		if Humanoid then Humanoid.PlatformStand = false end
+-- 6. زر تفعيل وعرض قائمة اللاعبين
+local playerListActive = true
+local togglePlayerListBtn = Instance.new("TextButton")
+togglePlayerListBtn.Name = "PlayerListToggle"
+togglePlayerListBtn.Parent = Container2
+togglePlayerListBtn.BackgroundColor3 = Color3.fromRGB(20, 130, 60)
+togglePlayerListBtn.BorderColor3 = Color3.fromRGB(0, 160, 255)
+togglePlayerListBtn.Position = UDim2.new(0.05, 0, 0, 15)
+togglePlayerListBtn.Size = UDim2.new(0, 345, 0, 40)
+togglePlayerListBtn.Font = Enum.Font.SourceSansBold
+togglePlayerListBtn.Text = "قائمة اللاعبين: مفعلة [✔️]"
+togglePlayerListBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+togglePlayerListBtn.TextSize = 14
+
+togglePlayerListBtn.MouseButton1Click:Connect(function()
+	playerListActive = not playerListActive
+	if playerListActive then
+		togglePlayerListBtn.Text = "قائمة اللاعبين: مفعلة [✔️]"
+		togglePlayerListBtn.BackgroundColor3 = Color3.fromRGB(20, 130, 60)
 	else
-		if HumanoidRootPart then
-			if HumanoidRootPart:FindFirstChild("HaidarFlyVelocity") then HumanoidRootPart.HaidarFlyVelocity:Destroy() end
-			if HumanoidRootPart:FindFirstChild("HaidarFlyGyro") then HumanoidRootPart.HaidarFlyGyro:Destroy() end
-		end
-		if Humanoid then Humanoid.PlatformStand = false end
+		togglePlayerListBtn.Text = "قائمة اللاعبين: معطلة [❌]"
+		togglePlayerListBtn.BackgroundColor3 = Color3.fromRGB(150, 30, 30)
 	end
 end)
 
--- 6. زر تشغيل وإيقاف قائمة اللاعبين في التبويب الثاني
-createFeatureToggle(Container2, "PlayerListToggle", 10, "تشغيل قائمة اللاعبين", function(state)
-	playerListActive = state
-end)
-
--- نظام قائمة اللاعبين المصغرة والمحدثة تلقائياً لتسع الجميع
+-- نظام قائمة اللاعبين والمراقبة
 local monitoredPlayer = nil
 local updatePlayerListFunc
 
@@ -423,64 +456,64 @@ updatePlayerListFunc = function()
 
 	if not playerListActive then return end
 
-	local yPos = 55
+	local yPos = 65
 	for _, p in pairs(Players:GetPlayers()) do
 		if p ~= LocalPlayer then
 			local playerCard = Instance.new("Frame")
 			playerCard.Parent = Container2
-			playerCard.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
-			playerCard.BorderColor3 = Color3.fromRGB(0, 255, 128)
+			playerCard.BackgroundColor3 = Color3.fromRGB(28, 28, 38)
+			playerCard.BorderColor3 = Color3.fromRGB(0, 160, 255)
 			playerCard.Position = UDim2.new(0.05, 0, 0, yPos)
-			playerCard.Size = UDim2.new(0, 320, 0, 95)
+			playerCard.Size = UDim2.new(0, 345, 0, 105)
 
 			local pLabel = Instance.new("TextLabel")
 			pLabel.Parent = playerCard
 			pLabel.BackgroundTransparency = 1
-			pLabel.Position = UDim2.new(0.05, 0, 0, 2)
-			pLabel.Size = UDim2.new(0.9, 0, 0, 20)
+			pLabel.Position = UDim2.new(0.05, 0, 0, 3)
+			pLabel.Size = UDim2.new(0.9, 0, 0, 22)
 			pLabel.Font = Enum.Font.SourceSansBold
-			pLabel.Text = p.Name
-			pLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
-			pLabel.TextSize = 13
+			pLabel.Text = "اللاعب: " .. p.Name
+			pLabel.TextColor3 = Color3.fromRGB(0, 190, 255)
+			pLabel.TextSize = 14
 			pLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-			-- مراقبة الكاميرا
+			-- زر مراقبة الكاميرا
 			local specBtn = Instance.new("TextButton")
 			specBtn.Parent = playerCard
-			specBtn.BackgroundColor3 = Color3.fromRGB(40, 90, 140)
-			specBtn.Position = UDim2.new(0.05, 0, 0, 25)
-			specBtn.Size = UDim2.new(0, 145, 0, 28)
+			specBtn.BackgroundColor3 = Color3.fromRGB(30, 90, 160)
+			specBtn.Position = UDim2.new(0.05, 0, 0, 30)
+			specBtn.Size = UDim2.new(0, 155, 0, 32)
 			specBtn.Font = Enum.Font.SourceSansBold
 			specBtn.Text = "مراقبة الكاميرا"
 			specBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			specBtn.TextSize = 11
+			specBtn.TextSize = 12
 
 			specBtn.MouseButton1Click:Connect(function()
 				if monitoredPlayer == p then
 					monitoredPlayer = nil
 					Camera.CameraSubject = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
-					specBtn.BackgroundColor3 = Color3.fromRGB(40, 90, 140)
+					specBtn.BackgroundColor3 = Color3.fromRGB(30, 90, 160)
 					specBtn.Text = "مراقبة الكاميرا"
 				else
 					monitoredPlayer = p
 					if p.Character and p.Character:FindFirstChild("Humanoid") then
 						Camera.CameraSubject = p.Character.Humanoid
-						specBtn.BackgroundColor3 = Color3.fromRGB(30, 150, 60)
+						specBtn.BackgroundColor3 = Color3.fromRGB(20, 140, 70)
 						specBtn.Text = "إيقاف المراقبة"
 					end
 				end
 			end)
 
-			-- انتقال (TP)
+			-- زر الانتقال (TP)
 			local tpBtn = Instance.new("TextButton")
 			tpBtn.Parent = playerCard
-			tpBtn.BackgroundColor3 = Color3.fromRGB(140, 90, 40)
-			tpBtn.Position = UDim2.new(0.51, 0, 0, 25)
-			tpBtn.Size = UDim2.new(0, 145, 0, 28)
+			tpBtn.BackgroundColor3 = Color3.fromRGB(160, 90, 30)
+			tpBtn.Position = UDim2.new(0.51, 0, 0, 30)
+			tpBtn.Size = UDim2.new(0, 155, 0, 32)
 			tpBtn.Font = Enum.Font.SourceSansBold
 			tpBtn.Text = "انتقال إليه (TP)"
 			tpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			tpBtn.TextSize = 11
+			tpBtn.TextSize = 12
 
 			tpBtn.MouseButton1Click:Connect(function()
 				if p.Character and p.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
@@ -488,34 +521,42 @@ updatePlayerListFunc = function()
 				end
 			end)
 
-			-- بانق من وره
-			local behindBtn = Instance.new("TextButton")
-			behindBtn.Parent = playerCard
-			behindBtn.BackgroundColor3 = Color3.fromRGB(120, 40, 140)
-			behindBtn.Position = UDim2.new(0.05, 0, 0, 58)
-			behindBtn.Size = UDim2.new(0, 145, 0, 28)
-			behindBtn.Font = Enum.Font.SourceSansBold
-			behindBtn.Text = "بانق من وره"
-			behindBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			behindBtn.TextSize = 11
+			-- زر الرفسة / الفلنق
+			local flingBtn = Instance.new("TextButton")
+			flingBtn.Parent = playerCard
+			flingBtn.BackgroundColor3 = Color3.fromRGB(120, 30, 160)
+			flingBtn.Position = UDim2.new(0.05, 0, 0, 66)
+			flingBtn.Size = UDim2.new(0, 155, 0, 32)
+			flingBtn.Font = Enum.Font.SourceSansBold
+			flingBtn.Text = "رفسة / فلنق قوية 💥"
+			flingBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+			flingBtn.TextSize = 12
 
-			behindBtn.MouseButton1Click:Connect(function()
-				if p.Character and p.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-					local targetCFrame = p.Character.HumanoidRootPart.CFrame
-					LocalPlayer.Character.HumanoidRootPart.CFrame = targetCFrame * CFrame.new(0, 0, 4)
+			flingBtn.MouseButton1Click:Connect(function()
+				local targetChar = p.Character
+				if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+					local targetHrp = targetChar.HumanoidRootPart
+					local bv = Instance.new("BodyVelocity")
+					bv.Name = "FlingBlast"
+					bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+					bv.Velocity = Vector3.new(math.random(-300, 300), 400, math.random(-300, 300))
+					bv.Parent = targetHrp
+					task.delay(0.25, function()
+						if bv then bv:Destroy() end
+					end)
 				end
 			end)
 
-			-- قتل تلقائي بأي سلاح
+			-- زر القتل التلقائي بأي سلاح
 			local killBtn = Instance.new("TextButton")
 			killBtn.Parent = playerCard
 			killBtn.BackgroundColor3 = Color3.fromRGB(180, 40, 40)
-			killBtn.Position = UDim2.new(0.51, 0, 0, 58)
-			killBtn.Size = UDim2.new(0, 145, 0, 28)
+			killBtn.Position = UDim2.new(0.51, 0, 0, 66)
+			killBtn.Size = UDim2.new(0, 155, 0, 32)
 			killBtn.Font = Enum.Font.SourceSansBold
 			killBtn.Text = "قتل تلقائي (بأي سلاح)"
 			killBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			killBtn.TextSize = 10
+			killBtn.TextSize = 11
 
 			killBtn.MouseButton1Click:Connect(function()
 				if p.Character and p.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character then
@@ -528,12 +569,11 @@ updatePlayerListFunc = function()
 				end
 			end)
 
-			yPos = yPos + 105
+			yPos = yPos + 115
 		end
 	end
 end
 
--- تحديث قائمة اللاعبين تلقائياً عند دخول أو خروج أي لاعب
 Players.PlayerAdded:Connect(updatePlayerListFunc)
 Players.PlayerRemoving:Connect(updatePlayerListFunc)
 
