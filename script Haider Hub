@@ -1,4 +1,4 @@
--- Delta Executor Script - حيدر هوب (Plantum Military Academy) - Final Joystick Fly Edition
+-- Delta Executor Script - حيدر هوب (Plantum Military Academy) - Final One-Time Airdrop Edition
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -11,7 +11,7 @@ if game.CoreGui:FindFirstChild("HaidarHubGUI") then
 	game.CoreGui.HaidarHubGUI:Destroy()
 end
 
--- إنشاء الواجهة الرئيسية (بحجم كبير ومريح)
+-- إنشاء الواجهة الرئيسية
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "HaidarHubGUI"
 ScreenGui.Parent = game.CoreGui
@@ -31,7 +31,6 @@ StatsLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
 StatsLabel.TextSize = 13
 StatsLabel.Text = "FPS: 60 | Ping: 0ms"
 
--- تحديث الـ FPS والـ Ping بشكل مستمر بدون لاق
 local lastTick = tick()
 local frameCount = 0
 RunService.RenderStepped:Connect(function()
@@ -65,7 +64,7 @@ ToggleButton.TextSize = 24
 ToggleButton.Active = true
 ToggleButton.Draggable = true
 
--- الإطار الرئيسي للسكربت (مكبر)
+-- الإطار الرئيسي للسكربت
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
@@ -85,7 +84,7 @@ Title.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
 Title.BorderSizePixel = 0
 Title.Size = UDim2.new(1, 0, 0, 50)
 Title.Font = Enum.Font.SourceSansBold
-Title.Text = "حيدر هوب - النسخة المطورة الكاملة (بدون لاق)"
+Title.Text = "حيدر هوب - النسخة النهائية المحدثة"
 Title.TextColor3 = Color3.fromRGB(0, 255, 128)
 Title.TextSize = 16
 
@@ -165,7 +164,6 @@ Tab2Btn.MouseButton1Click:Connect(function()
 	Container2.Visible = true
 end)
 
--- دالة لإنشاء الأزرار مع حالة تشغيل/إيقاف
 local function createFeatureToggle(parent, name, posY, text, callback)
 	local label = Instance.new("TextLabel")
 	label.Parent = parent
@@ -205,58 +203,45 @@ local function createFeatureToggle(parent, name, posY, text, callback)
 	return btn
 end
 
--- متغيرات التحكم والحالة
 local noclipActive = false
 local flyActive = false
 local customSpeed = 16
 local speedActive = false
 local autoMathActive = false
-local autoOpenAirdrop = false
-local autoTpAirdrop = false
+local autoAirdropOnce = false
 local playerListActive = true
+local handledAirdrops = {} -- لتسجيل الدروبات التي تم التعامل معها مرة واحدة فقط
 
--- 1. زر فتح الدروب الجوي التلقائي المستمر
-createFeatureToggle(Container1, "AirdropOpenToggle", 15, "فتح الدروب تلقائياً", function(state)
-	autoOpenAirdrop = state
+-- 1. الانتقال والفتح التلقائي لكل دروب جديد مرة واحدة فقط
+createFeatureToggle(Container1, "AirdropOnceToggle", 15, "انتقال وفتح كل دروب (مرة واحدة)", function(state)
+	autoAirdropOnce = state
+	if not state then
+		handledAirdrops = {}
+	end
 end)
 
 task.spawn(function()
 	while true do
 		task.wait(0.5)
-		if autoOpenAirdrop then
-			pcall(function()
-				for _, obj in pairs(workspace:GetDescendants()) do
-					if obj:IsA("Model") and (string.lower(obj.Name):find("airdrop") or string.lower(obj.Name):find("drop") or string.lower(obj.Name):find("صندوق")) then
-						for _, prompt in pairs(obj:GetDescendants()) do
-							if prompt:IsA("ProximityPrompt") then
-								fireproximityprompt(prompt)
-							end
-						end
-					end
-				end
-			end)
-		end
-	end
-end)
-
--- 2. زر الانتقال للدروب الجوي التلقائي المستمر
-createFeatureToggle(Container1, "AirdropTpToggle", 65, "انتقال للدروب تلقائياً", function(state)
-	autoTpAirdrop = state
-end)
-
-task.spawn(function()
-	while true do
-		task.wait(1)
-		if autoTpAirdrop then
+		if autoAirdropOnce then
 			pcall(function()
 				local Character = LocalPlayer.Character
 				if Character and Character:FindFirstChild("HumanoidRootPart") then
 					for _, obj in pairs(workspace:GetDescendants()) do
 						if obj:IsA("Model") and (string.lower(obj.Name):find("airdrop") or string.lower(obj.Name):find("drop") or string.lower(obj.Name):find("صندوق")) then
-							local targetPart = obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
-							if targetPart then
-								Character.HumanoidRootPart.CFrame = targetPart.CFrame + Vector3.new(0, 4, 0)
-								break
+							if not handledAirdrops[obj] then
+								local targetPart = obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
+								if targetPart then
+									-- الانتقال للدروب الجديد مرة واحدة
+									Character.HumanoidRootPart.CFrame = targetPart.CFrame + Vector3.new(0, 3, 0)
+									handledAirdrops[obj] = true
+								end
+							end
+							-- محاولة فتح الدروب فوراً
+							for _, prompt in pairs(obj:GetDescendants()) do
+								if prompt:IsA("ProximityPrompt") then
+									fireproximityprompt(prompt)
+								end
 							end
 						end
 					end
@@ -266,50 +251,59 @@ task.spawn(function()
 	end
 end)
 
--- 3. حل المعادلات والتأكيد التلقائي المستمر
-createFeatureToggle(Container1, "MathToggle", 115, "حل وتأكيد المعادلات تلقائياً", function(state)
+-- 2. حل المعادلة مرة واحدة فقط عند فتح الدروب الجوي
+createFeatureToggle(Container1, "MathToggle", 65, "حل المعادلة مرة واحدة للفتح", function(state)
 	autoMathActive = state
 end)
 
+local mathSolvedForCurrentGui = false
 task.spawn(function()
 	while true do
 		task.wait(0.3)
 		if autoMathActive then
 			pcall(function()
+				local foundGui = false
 				for _, gui in pairs(LocalPlayer.PlayerGui:GetDescendants()) do
 					if gui:IsA("TextLabel") or gui:IsA("TextBox") then
 						local text = gui.Text
 						local n1, op, n2 = text:match("(%-?%d+)%s*([%+%-*/])%s*(%-?%d+)")
 						if n1 and op and n2 then
-							n1, n2 = tonumber(n1), tonumber(n2)
-							local ans = 0
-							if op == "+" then ans = n1 + n2
-							elseif op == "-" then ans = n1 - n2
-							elseif op == "*" then ans = n1 * n2
-							elseif op == "/" and n2 ~= 0 then ans = n1 / n2 end
-							
-							for _, box in pairs(gui.Parent:GetDescendants()) do
-								if box:IsA("TextBox") then
-									box.Text = tostring(ans)
-								end
-							end
-							for _, btn in pairs(gui.Parent:GetDescendants()) do
-								if btn:IsA("TextButton") and (string.lower(btn.Text):find("تأكيد") or string.lower(btn.Text):find("confirm") or string.lower(btn.Text):find("حل")) then
-									for _, connection in pairs(getconnections(btn.MouseButton1Click)) do
-										connection:Fire()
+							foundGui = true
+							if not mathSolvedForCurrentGui then
+								n1, n2 = tonumber(n1), tonumber(n2)
+								local ans = 0
+								if op == "+" then ans = n1 + n2
+								elseif op == "-" then ans = n1 - n2
+								elseif op == "*" then ans = n1 * n2
+								elseif op == "/" and n2 ~= 0 then ans = n1 / n2 end
+								
+								for _, box in pairs(gui.Parent:GetDescendants()) do
+									if box:IsA("TextBox") then
+										box.Text = tostring(ans)
 									end
 								end
+								for _, btn in pairs(gui.Parent:GetDescendants()) do
+									if btn:IsA("TextButton") and (string.lower(btn.Text):find("تأكيد") or string.lower(btn.Text):find("confirm") or string.lower(btn.Text):find("حل")) then
+										for _, connection in pairs(getconnections(btn.MouseButton1Click)) do
+											connection:Fire()
+										end
+									end
+								end
+								mathSolvedForCurrentGui = true
 							end
 						end
 					end
+				end
+				if not foundGui then
+					mathSolvedForCurrentGui = false
 				end
 			end)
 		end
 	end
 end)
 
--- 4. التحكم بالسرعة
-createFeatureToggle(Container1, "SpeedToggle", 165, "تفعيل سرعة إضافية", function(state)
+-- 3. التحكم بالسرعة
+createFeatureToggle(Container1, "SpeedToggle", 115, "تفعيل سرعة إضافية", function(state)
 	speedActive = state
 	local Character = LocalPlayer.Character
 	if Character and Character:FindFirstChild("Humanoid") then
@@ -321,7 +315,7 @@ local speedBox = Instance.new("TextBox")
 speedBox.Parent = Container1
 speedBox.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 speedBox.BorderColor3 = Color3.fromRGB(0, 255, 128)
-speedBox.Position = UDim2.new(0.05, 0, 0, 215)
+speedBox.Position = UDim2.new(0.05, 0, 0, 165)
 speedBox.Size = UDim2.new(0, 290, 0, 35)
 speedBox.Font = Enum.Font.SourceSansBold
 speedBox.Text = "50 (اكتب السرعة واضغط Enter)"
@@ -340,17 +334,17 @@ speedBox.FocusLost:Connect(function(enterPressed)
 	end
 end)
 
--- 5. ميزة الطيران (Joystick + Camera Fly)
-createFeatureToggle(Container1, "FlyToggle", 265, "ميزة الطيران (Fly)", function(state)
+-- 4. ميزة الطيران والمشي معاً باتجاه الكاميرا والجويستك
+createFeatureToggle(Container1, "FlyToggle", 215, "ميزة الطيران (Fly + Walk)", function(state)
 	flyActive = state
 end)
 
--- 6. ميزة اختراق الجدران (Noclip)
-createFeatureToggle(Container1, "NoclipToggle", 315, "اختراق الجدران (Noclip)", function(state)
+-- 5. ميزة اختراق الجدران (Noclip)
+createFeatureToggle(Container1, "NoclipToggle", 265, "اختراق الجدران (Noclip)", function(state)
 	noclipActive = state
 end)
 
--- نظام التشغيل الموحد المحدث (يدعم التحكم بالجويستك واتجاه الكاميرا بسلاسة تامة)
+-- نظام التشغيل الموحد (الطيران والمشي معاً ويتجه نحو الكاميرا بسلاسة)
 RunService.Stepped:Connect(function()
 	local Character = LocalPlayer.Character
 	if not Character then return end
@@ -383,23 +377,17 @@ RunService.Stepped:Connect(function()
 			bg.Parent = HumanoidRootPart
 		end
 		
-		-- جلب حركة الجويستك أو الأزرار واتجاه الكاميرا التلقائي
 		local moveDir = Vector3.new()
 		if Humanoid then
-			moveDir = Humanoid.MoveDirection -- يتفاعل تماماً مع الجويستك (Joystick)
+			moveDir = Humanoid.MoveDirection
 		end
 		
-		-- إذا لم يتم تحريك الجويستك، يدعم أيضاً أزرار لوحة المفاتيح للاحتياط
 		if moveDir.Magnitude == 0 then
 			if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Camera.CFrame.LookVector end
 			if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Camera.CFrame.LookVector end
 			if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Camera.CFrame.RightVector end
 			if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Camera.CFrame.RightVector end
 		else
-			-- توجيه الحركة حسب وين ما تفر الكاميرا
-			local camFlatLook = Vector3.new(Camera.CFrame.LookVector.X, 0, Camera.CFrame.LookVector.Z).Unit
-			local camFlatRight = Vector3.new(Camera.CFrame.RightVector.X, 0, Camera.CFrame.RightVector.Z).Unit
-			-- إعادة توجيه متجه الجويستك بناءً على وجهة الكاميرا الحالية
 			local joyX = Humanoid.MoveDirection:Dot(Camera.CFrame.RightVector)
 			local joyZ = Humanoid.MoveDirection:Dot(Camera.CFrame.LookVector)
 			moveDir = (Camera.CFrame.LookVector * joyZ) + (Camera.CFrame.RightVector * joyX)
@@ -407,7 +395,7 @@ RunService.Stepped:Connect(function()
 		
 		bv.Velocity = moveDir * 55
 		bg.CFrame = Camera.CFrame
-		if Humanoid then Humanoid.PlatformStand = true end
+		if Humanoid then Humanoid.PlatformStand = false end
 	else
 		if HumanoidRootPart then
 			if HumanoidRootPart:FindFirstChild("HaidarFlyVelocity") then HumanoidRootPart.HaidarFlyVelocity:Destroy() end
@@ -417,7 +405,7 @@ RunService.Stepped:Connect(function()
 	end
 end)
 
--- 7. زر تشغيل وإيقاف قائمة اللاعبين في التبويب الثاني
+-- 6. زر تشغيل وإيقاف قائمة اللاعبين في التبويب الثاني
 createFeatureToggle(Container2, "PlayerListToggle", 10, "تشغيل قائمة اللاعبين", function(state)
 	playerListActive = state
 end)
