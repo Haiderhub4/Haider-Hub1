@@ -1,0 +1,311 @@
+-- Delta Executor Script - حيدر هوب (Plantum Military Academy)
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+-- إزالة أي واجهة قديمة لتجنب التكرار
+if game.CoreGui:FindFirstChild("HaidarHubGUI") then
+	game.CoreGui.HaidarHubGUI:Destroy()
+end
+
+-- إنشاء الواجهة الرئيسية
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "HaidarHubGUI"
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- الأيقونة العائمة (زر الفتح والإغلاق)
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Name = "ToggleBtn"
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+ToggleButton.BorderColor3 = Color3.fromRGB(0, 255, 128)
+ToggleButton.BorderSizePixel = 2
+ToggleButton.Position = UDim2.new(0.02, 0, 0.15, 0)
+ToggleButton.Size = UDim2.new(0, 45, 0, 45)
+ToggleButton.Font = Enum.Font.SourceSansBold
+ToggleButton.Text = "📦"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.TextSize = 20
+ToggleButton.Active = true
+ToggleButton.Draggable = true
+
+-- الإطار الرئيسي للسكربت
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+MainFrame.BorderColor3 = Color3.fromRGB(0, 255, 128)
+MainFrame.BorderSizePixel = 2
+MainFrame.Position = UDim2.new(0.08, 0, 0.2, 0)
+MainFrame.Size = UDim2.new(0, 340, 0, 360)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Visible = true
+
+-- عنوان القائمة (حيدر هوب)
+local Title = Instance.new("TextLabel")
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+Title.BorderSizePixel = 0
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Font = Enum.Font.SourceSansBold
+Title.Text = "حيدر هوب - سكربت الحماية والأداء"
+Title.TextColor3 = Color3.fromRGB(0, 255, 128)
+Title.TextSize = 15
+
+-- زر إغلاق القائمة الداخلي (X)
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Parent = Title
+CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+CloseBtn.BorderSizePixel = 0
+CloseBtn.Position = UDim2.new(0.88, 0, 0.15, 0)
+CloseBtn.Size = UDim2.new(0, 28, 0, 28)
+CloseBtn.Font = Enum.Font.SourceSansBold
+CloseBtn.Text = "X"
+CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseBtn.TextSize = 14
+
+ToggleButton.MouseButton1Click:Connect(function()
+	MainFrame.Visible = not MainFrame.Visible
+end)
+
+CloseBtn.MouseButton1Click:Connect(function()
+	ScreenGui:Destroy()
+end)
+
+-- نظام القوائم الجانبية (Tabs)
+local TabSelectorFrame = Instance.new("Frame")
+TabSelectorFrame.Parent = MainFrame
+TabSelectorFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+TabSelectorFrame.BorderSizePixel = 0
+TabSelectorFrame.Position = UDim2.new(0, 0, 0, 40)
+TabSelectorFrame.Size = UDim2.new(0, 100, 1, -40)
+
+local ContentFrame = Instance.new("Frame")
+ContentFrame.Parent = MainFrame
+ContentFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+ContentFrame.BorderSizePixel = 0
+ContentFrame.Position = UDim2.new(0, 100, 0, 40)
+ContentFrame.Size = UDim2.new(1, -100, 1, -40)
+
+local function createTab(name, posIndex)
+	local tabBtn = Instance.new("TextButton")
+	tabBtn.Parent = TabSelectorFrame
+	tabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+	tabBtn.BorderSizePixel = 0
+	tabBtn.Position = UDim2.new(0, 0, 0, (posIndex - 1) * 45)
+	tabBtn.Size = UDim2.new(1, 0, 0, 40)
+	tabBtn.Font = Enum.Font.SourceSansBold
+	tabBtn.Text = name
+	tabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	tabBtn.TextSize = 13
+	return tabBtn
+end
+
+local Tab1Btn = createTab("المميزات الأساسية", 1)
+local Tab2Btn = createTab("قائمة المراقبة", 2)
+
+local Container1 = Instance.new("ScrollingFrame")
+Container1.Parent = ContentFrame
+Container1.BackgroundTransparency = 1
+Container1.Size = UDim2.new(1, 0, 1, 0)
+Container1.CanvasSize = UDim2.new(0, 0, 1.5, 0)
+Container1.Visible = true
+
+local Container2 = Instance.new("ScrollingFrame")
+Container2.Parent = ContentFrame
+Container2.BackgroundTransparency = 1
+Container2.Size = UDim2.new(1, 0, 1, 0)
+Container2.CanvasSize = UDim2.new(0, 0, 2, 0)
+Container2.Visible = false
+
+Tab1Btn.MouseButton1Click:Connect(function()
+	Container1.Visible = true
+	Container2.Visible = false
+end)
+
+Tab2Btn.MouseButton1Click:Connect(function()
+	Container1.Visible = false
+	Container2.Visible = true
+end)
+
+-- دالة مساعدة لإنشاء الأزرار مع زر تشغيل/إيقاف بجانبها
+local function createFeatureToggle(name, posY, text, callback)
+	local label = Instance.new("TextLabel")
+	label.Parent = Container1
+	label.BackgroundTransparency = 1
+	label.Position = UDim2.new(0.05, 0, 0, posY)
+	label.Size = UDim2.new(0, 140, 0, 30)
+	label.Font = Enum.Font.SourceSansBold
+	label.Text = text
+	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	label.TextSize = 12
+	label.TextXAlignment = Enum.TextXAlignment.Left
+
+	local btn = Instance.new("TextButton")
+	btn.Name = name
+	btn.Parent = Container1
+	btn.BackgroundColor3 = Color3.fromRGB(150, 30, 30)
+	btn.BorderColor3 = Color3.fromRGB(0, 255, 128)
+	btn.Position = UDim2.new(0.62, 0, 0, posY)
+	btn.Size = UDim2.new(0, 75, 0, 30)
+	btn.Font = Enum.Font.SourceSansBold
+	btn.Text = "إيقاف [❌]"
+	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	btn.TextSize = 11
+
+	local state = false
+	btn.MouseButton1Click:Connect(function()
+		state = not state
+		if state then
+			btn.Text = "تشغيل [✔️]"
+			btn.BackgroundColor3 = Color3.fromRGB(30, 150, 60)
+		else
+			btn.Text = "إيقاف [❌]"
+			btn.BackgroundColor3 = Color3.fromRGB(150, 30, 30)
+		end
+		callback(state)
+	end)
+	return btn
+end
+
+-- متغيرات النظام الجديدة
+local autoAirdropOpen = false
+local autoAirdropTp = false
+local autoMathActive = false
+
+-- 1. زر فتح الدروب الجوي تلقائياً
+createFeatureToggle("AirdropOpenToggle", 10, "فتح الدروب الجوي", function(state)
+	autoAirdropOpen = state
+end)
+
+-- 2. زر الانتقال التلقائي للدروب الجوي
+createFeatureToggle("AirdropTpToggle", 55, "انتقال للدروب الجوي", function(state)
+	autoAirdropTp = state
+end)
+
+-- 3. زر حل المعادلات والتأكيد تلقائياً
+createFeatureToggle("MathToggle", 100, "حل المعادلات والتأكيد", function(state)
+	autoMathActive = state
+end)
+
+-- 4. زر سرعة إضافية
+createFeatureToggle("SpeedToggle", 145, "سرعة إضافية (50)", function(state)
+	local Character = LocalPlayer.Character
+	if Character and Character:FindFirstChild("Humanoid") then
+		Character.Humanoid.WalkSpeed = state and 50 or 16
+	end
+end)
+
+-- نظام قائمة المراقبة للناس (Spectate System)
+local monitoredPlayer = nil
+
+local function updatePlayerList()
+	for _, child in pairs(Container2:GetChildren()) do
+		if child:IsA("TextButton") then
+			child:Destroy()
+		end
+	end
+
+	local yPos = 10
+	for _, p in pairs(Players:GetPlayers()) do
+		if p ~= LocalPlayer then
+			local pBtn = Instance.new("TextButton")
+			pBtn.Parent = Container2
+			pBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+			pBtn.BorderColor3 = Color3.fromRGB(0, 255, 128)
+			pBtn.Position = UDim2.new(0.05, 0, 0, yPos)
+			pBtn.Size = UDim2.new(0, 210, 0, 30)
+			pBtn.Font = Enum.Font.SourceSansBold
+			pBtn.Text = "مراقبة: " .. p.Name
+			pBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+			pBtn.TextSize = 12
+
+			pBtn.MouseButton1Click:Connect(function()
+				if monitoredPlayer == p then
+					monitoredPlayer = nil
+					Camera.CameraSubject = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
+					pBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+					pBtn.Text = "مراقبة: " .. p.Name
+				else
+					monitoredPlayer = p
+					if p.Character and p.Character:FindFirstChild("Humanoid") then
+						Camera.CameraSubject = p.Character.Humanoid
+						pBtn.BackgroundColor3 = Color3.fromRGB(30, 150, 60)
+						pBtn.Text = "إيقاف مراقبة: " .. p.Name
+					end
+				end
+			end)
+			yPos = yPos + 40
+		end
+	end
+end
+
+local refreshBtn = Instance.new("TextButton")
+refreshBtn.Parent = Container2
+refreshBtn.BackgroundColor3 = Color3.fromRGB(30, 100, 150)
+refreshBtn.BorderSizePixel = 0
+refreshBtn.Position = UDim2.new(0.05, 0, 0, 320)
+refreshBtn.Size = UDim2.new(0, 210, 0, 30)
+refreshBtn.Font = Enum.Font.SourceSansBold
+refreshBtn.Text = "تحديث قائمة اللاعبين"
+refreshBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+refreshBtn.TextSize = 12
+refreshBtn.MouseButton1Click:Connect(updatePlayerList)
+
+updatePlayerList()
+
+-- اللوب الخلفي لتنفيذ الميزات بسلاسة وبدون Lag
+RunService.Stepped:Connect(function()
+	local Character = LocalPlayer.Character
+	if not Character or not Character:FindFirstChild("HumanoidRootPart") then return end
+	local HumanoidRootPart = Character.HumanoidRootPart
+
+	-- البحث عن الدروب الجوي (Airdrop) في الخريطة
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if obj:IsA("Model") and (string.lower(obj.Name):find("airdrop") or string.lower(obj.Name):find("drop")) then
+			local targetPart = obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
+			if targetPart then
+				-- الانتقال التلقائي لمكان الدروب إذا كانت الميزة مفعلة
+				if autoAirdropTp then
+					HumanoidRootPart.CFrame = targetPart.CFrame + Vector3.new(0, 3, 0)
+				end
+				-- فتح الدروب التلقائي عبر تفعيل الـ ProximityPrompt إذا كانت الميزة مفعلة
+				if autoAirdropOpen then
+					for _, prompt in pairs(obj:GetDescendants()) do
+						if prompt:IsA("ProximityPrompt") then
+							fireproximityprompt(prompt)
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- حل المعادلات التلقائي والضغط على زر التأكيد
+	if autoMathActive then
+		for _, gui in pairs(LocalPlayer.PlayerGui:GetDescendants()) do
+			if gui:IsA("TextLabel") or gui:IsA("TextBox") then
+				local text = gui.Text
+				local num1, num2 = text:match("(%d+)%s*%+%s*(%d+)")
+				if num1 and num2 then
+					local answer = tonumber(num1) + tonumber(num2)
+					for _, box in pairs(gui.Parent:GetDescendants()) do
+						if box:IsA("TextBox") then
+							box.Text = tostring(answer)
+						end
+					end
+					for _, btn in pairs(gui.Parent:GetDescendants()) do
+						if btn:IsA("TextButton") and (string.lower(btn.Text):find("تأكيد") or string.lower(btn.Text):find("confirm")) then
+							for _, connection in pairs(getconnections(btn.MouseButton1Click)) do
+								connection:Fire()
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end)
