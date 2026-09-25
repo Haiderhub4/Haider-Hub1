@@ -148,7 +148,7 @@ local Container1 = Instance.new("ScrollingFrame")
 Container1.Parent = ContentFrame
 Container1.BackgroundTransparency = 1
 Container1.Size = UDim2.new(1, 0, 1, 0)
-Container1.CanvasSize = UDim2.new(0, 0, 3.5, 0)
+Container1.CanvasSize = UDim2.new(0, 0, 4.5, 0)
 Container1.Visible = true
 
 local Container2 = Instance.new("ScrollingFrame")
@@ -214,9 +214,91 @@ local autoMathActive = false
 local instantPromptActive = false
 local joyFlyActive = false
 local joyFlySpeed = 50
+local autoFarmDropsActive = false
+local autoQuestChestActive = false
 
--- 1. زر تشغيل وإيقاف أخذ الأشياء بضغطة زر وحدة (Prompt الفوري)
-createFeatureToggle(Container1, "InstantPromptToggle", 15, "أخذ الأشياء/الدروع (ضغطة وحدة)", function(state)
+-- 1. أوتو فارم الصناديق مع أخذ المهمة أولاً
+createFeatureToggle(Container1, "AutoQuestChestToggle", 15, "أوتو فارم (مهمة + صندوق) 📦", function(state)
+	autoQuestChestActive = state
+end)
+
+task.spawn(function()
+	while true do
+		task.wait(0.4)
+		if autoQuestChestActive then
+			pcall(function()
+				local Character = LocalPlayer.Character
+				if Character and Character:FindFirstChild("HumanoidRootPart") then
+					local hrp = Character.HumanoidRootPart
+					
+					local questTarget = nil
+					for _, obj in pairs(workspace:GetDescendants()) do
+						if obj:IsA("ProximityPrompt") then
+							local nameLower = string.lower(obj.Parent.Name)
+							if nameLower:find("quest") or nameLower:find("mission") or nameLower:find("task") or nameLower:find("board") then
+								questTarget = obj.Parent
+								if (hrp.Position - questTarget.Position).Magnitude > 5 then
+									hrp.CFrame = questTarget.CFrame + Vector3.new(0, 3, 0)
+									task.wait(0.2)
+								end
+								fireproximityprompt(obj)
+								task.wait(0.3)
+								break
+							end
+						end
+					end
+					
+					local chestTarget = nil
+					for _, obj in pairs(workspace:GetDescendants()) do
+						if obj:IsA("BasePart") and not obj.Anchored then
+							local nameLower = string.lower(obj.Name)
+							if nameLower:find("chest") or nameLower:find("box") or nameLower:find("loot") then
+								chestTarget = obj
+								break
+							end
+						end
+					end
+					
+					if chestTarget then
+						hrp.CFrame = chestTarget.CFrame + Vector3.new(0, 2, 0)
+						task.wait(0.2)
+					end
+				end
+			end)
+		end
+	end
+end)
+
+-- 2. أوتو فارم الدروبات العادية
+createFeatureToggle(Container1, "AutoFarmDropsToggle", 70, "أوتو فارم الدروبات العادية 🎁", function(state)
+	autoFarmDropsActive = state
+end)
+
+task.spawn(function()
+	while true do
+		task.wait(0.3)
+		if autoFarmDropsActive then
+			pcall(function()
+				local Character = LocalPlayer.Character
+				if Character and Character:FindFirstChild("HumanoidRootPart") then
+					local hrp = Character.HumanoidRootPart
+					for _, obj in pairs(workspace:GetDescendants()) do
+						if obj:IsA("BasePart") and not obj.Anchored then
+							local nameLower = string.lower(obj.Name)
+							if nameLower:find("drop") or nameLower:find("coin") or nameLower:find("item") then
+								hrp.CFrame = obj.CFrame + Vector3.new(0, 2, 0)
+								task.wait(0.15)
+							end
+						end
+					end
+				end
+			end)
+		end
+	end
+end)
+
+-- 3. أخذ الأشياء بضغطة زر وحدة (Prompt الفوري)
+createFeatureToggle(Container1, "InstantPromptToggle", 125, "أخذ الأشياء/الدروع (ضغطة وحدة)", function(state)
 	instantPromptActive = state
 end)
 
@@ -243,8 +325,8 @@ task.spawn(function()
 	end
 end)
 
--- 2. حل المعادلة والتأكيد التلقائي
-createFeatureToggle(Container1, "MathToggle", 70, "حل المعادلة والتأكيد التلقائي", function(state)
+-- 4. حل المعادلة والتأكيد التلقائي
+createFeatureToggle(Container1, "MathToggle", 180, "حل المعادلة والتأكيد التلقائي", function(state)
 	autoMathActive = state
 end)
 
@@ -295,8 +377,8 @@ task.spawn(function()
 	end
 end)
 
--- 3. تفعيل السرعة
-createFeatureToggle(Container1, "SpeedToggle", 125, "تفعيل سرعة إضافية", function(state)
+-- 5. تفعيل السرعة
+createFeatureToggle(Container1, "SpeedToggle", 235, "تفعيل سرعة إضافية", function(state)
 	speedActive = state
 	local Character = LocalPlayer.Character
 	if Character and Character:FindFirstChild("Humanoid") then
@@ -308,7 +390,7 @@ local speedBox = Instance.new("TextBox")
 speedBox.Parent = Container1
 speedBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 speedBox.BorderColor3 = Color3.fromRGB(0, 160, 255)
-speedBox.Position = UDim2.new(0.05, 0, 0, 180)
+speedBox.Position = UDim2.new(0.05, 0, 0, 290)
 speedBox.Size = UDim2.new(0, 310, 0, 38)
 speedBox.Font = Enum.Font.SourceSansBold
 speedBox.Text = "50 (اكتب السرعة واضغط Enter)"
@@ -327,8 +409,8 @@ speedBox.FocusLost:Connect(function(enterPressed)
 	end
 end)
 
--- 4. طيران الجوستيك للهاتف (Joystick Fly)
-createFeatureToggle(Container1, "JoyFlyToggle", 235, "طيران بالجوستيك (حرك العصا للطيارة ✈️)", function(state)
+-- 6. طيران الجوستيك الفعال والقوي للهاتف (Joystick Fly)
+createFeatureToggle(Container1, "JoyFlyToggle", 345, "طيران بالجوستيك الفعال (✈️)", function(state)
 	joyFlyActive = state
 	local Character = LocalPlayer.Character
 	if not Character or not Character:FindFirstChild("HumanoidRootPart") then return end
@@ -353,14 +435,22 @@ createFeatureToggle(Container1, "JoyFlyToggle", 235, "طيران بالجوست�
 			while joyFlyActive and Character and Character:FindFirstChild("HumanoidRootPart") do
 				RunService.RenderStepped:Wait()
 				local camCF = Camera.CFrame
-				local moveDir = humanoid and humanoid.MoveDirection or Vector3.new(0,0,0)
+				local moveDir = humanoid and humanoid.MoveDirection or Vector3.new(0, 0, 0)
 				
+				-- تفعيل خاصية الطيران الشاملة بحسب الجوستيك والكاميرا
 				if moveDir.Magnitude > 0 then
 					bv.Velocity = ((camCF.LookVector * moveDir.Z) + (camCF.RightVector * moveDir.X) + Vector3.new(0, moveDir.Y, 0)).Unit * joyFlySpeed
 				else
-					bv.Velocity = Vector3.new(0, 0, 0) -- يقف في مكانه إذا لم تحرك الجوستيك
+					bv.Velocity = Vector3.new(0, 0, 0)
 				end
 				bg.CFrame = camCF
+				
+				-- إلغاء الجاذبية لكي لا يسقط اللاعب
+				for _, part in pairs(Character:GetDescendants()) do
+					if part:IsA("BasePart") then
+						part.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+					end
+				end
 			end
 			if bv then bv:Destroy() end
 			if bg then bg:Destroy() end
@@ -379,7 +469,7 @@ local joyFlySpeedBox = Instance.new("TextBox")
 joyFlySpeedBox.Parent = Container1
 joyFlySpeedBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 joyFlySpeedBox.BorderColor3 = Color3.fromRGB(0, 160, 255)
-joyFlySpeedBox.Position = UDim2.new(0.05, 0, 0, 285)
+joyFlySpeedBox.Position = UDim2.new(0.05, 0, 0, 395)
 joyFlySpeedBox.Size = UDim2.new(0, 310, 0, 38)
 joyFlySpeedBox.Font = Enum.Font.SourceSansBold
 joyFlySpeedBox.Text = "50 (اكتب سرعة الطيران واضغط Enter)"
@@ -395,8 +485,8 @@ joyFlySpeedBox.FocusLost:Connect(function(enterPressed)
 	end
 end)
 
--- 5. اختراق الجدران (Noclip)
-createFeatureToggle(Container1, "NoclipToggle", 345, "اختراق الجدران (Noclip)", function(state)
+-- 7. اختراق الجدران (Noclip)
+createFeatureToggle(Container1, "NoclipToggle", 455, "اختراق الجدران (Noclip)", function(state)
 	noclipActive = state
 end)
 
@@ -418,7 +508,7 @@ RunService.Stepped:Connect(function()
 	end
 end)
 
--- 6. زر تفعيل وعرض قائمة اللاعبين
+-- 8. زر تفعيل وعرض قائمة اللاعبين
 local playerListActive = true
 local togglePlayerListBtn = Instance.new("TextButton")
 togglePlayerListBtn.Name = "PlayerListToggle"
