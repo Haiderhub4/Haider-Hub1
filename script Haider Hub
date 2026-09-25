@@ -1,4 +1,4 @@
--- Delta Executor Script - حيدر هوب (Plantum Military Academy) - Final Edition
+-- Delta Executor Script - حيدر هوب (Plantum Military Academy) - Final Joystick Fly Edition
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -213,7 +213,7 @@ local speedActive = false
 local autoMathActive = false
 local autoOpenAirdrop = false
 local autoTpAirdrop = false
-local playerListActive = true -- مفعلة افتراضياً
+local playerListActive = true
 
 -- 1. زر فتح الدروب الجوي التلقائي المستمر
 createFeatureToggle(Container1, "AirdropOpenToggle", 15, "فتح الدروب تلقائياً", function(state)
@@ -340,7 +340,7 @@ speedBox.FocusLost:Connect(function(enterPressed)
 	end
 end)
 
--- 5. ميزة الطيران (Fly) المخصصة لروبلوكس
+-- 5. ميزة الطيران (Joystick + Camera Fly)
 createFeatureToggle(Container1, "FlyToggle", 265, "ميزة الطيران (Fly)", function(state)
 	flyActive = state
 end)
@@ -350,7 +350,7 @@ createFeatureToggle(Container1, "NoclipToggle", 315, "اختراق الجدرا�
 	noclipActive = state
 end)
 
--- نظام التشغيل الموحد (بدون لاق)
+-- نظام التشغيل الموحد المحدث (يدعم التحكم بالجويستك واتجاه الكاميرا بسلاسة تامة)
 RunService.Stepped:Connect(function()
 	local Character = LocalPlayer.Character
 	if not Character then return end
@@ -375,21 +375,37 @@ RunService.Stepped:Connect(function()
 		if not bv then
 			bv = Instance.new("BodyVelocity")
 			bv.Name = "HaidarFlyVelocity"
-			bv.MaxForce = Vector3.new(900000, 900000, 900000)
+			bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
 			bv.Parent = HumanoidRootPart
 			bg = Instance.new("BodyGyro")
 			bg.Name = "HaidarFlyGyro"
-			bg.MaxTorque = Vector3.new(900000, 900000, 900000)
+			bg.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
 			bg.Parent = HumanoidRootPart
 		end
 		
+		-- جلب حركة الجويستك أو الأزرار واتجاه الكاميرا التلقائي
 		local moveDir = Vector3.new()
-		if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Camera.CFrame.LookVector end
-		if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Camera.CFrame.LookVector end
-		if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Camera.CFrame.RightVector end
-		if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Camera.CFrame.RightVector end
+		if Humanoid then
+			moveDir = Humanoid.MoveDirection -- يتفاعل تماماً مع الجويستك (Joystick)
+		end
 		
-		bv.Velocity = moveDir * 60
+		-- إذا لم يتم تحريك الجويستك، يدعم أيضاً أزرار لوحة المفاتيح للاحتياط
+		if moveDir.Magnitude == 0 then
+			if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Camera.CFrame.LookVector end
+			if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Camera.CFrame.LookVector end
+			if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Camera.CFrame.RightVector end
+			if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Camera.CFrame.RightVector end
+		else
+			-- توجيه الحركة حسب وين ما تفر الكاميرا
+			local camFlatLook = Vector3.new(Camera.CFrame.LookVector.X, 0, Camera.CFrame.LookVector.Z).Unit
+			local camFlatRight = Vector3.new(Camera.CFrame.RightVector.X, 0, Camera.CFrame.RightVector.Z).Unit
+			-- إعادة توجيه متجه الجويستك بناءً على وجهة الكاميرا الحالية
+			local joyX = Humanoid.MoveDirection:Dot(Camera.CFrame.RightVector)
+			local joyZ = Humanoid.MoveDirection:Dot(Camera.CFrame.LookVector)
+			moveDir = (Camera.CFrame.LookVector * joyZ) + (Camera.CFrame.RightVector * joyX)
+		end
+		
+		bv.Velocity = moveDir * 55
 		bg.CFrame = Camera.CFrame
 		if Humanoid then Humanoid.PlatformStand = true end
 	else
@@ -533,7 +549,6 @@ end
 Players.PlayerAdded:Connect(updatePlayerListFunc)
 Players.PlayerRemoving:Connect(updatePlayerListFunc)
 
--- حلقة خفيفة لتحديث القائمة بانتظام لتسع الجميع بدقة
 task.spawn(function()
 	while true do
 		task.wait(2)
