@@ -1,0 +1,106 @@
+-- التأكد من تحميل واجهة اللعبة الأساسية
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+-- إنشاء واجهة المستخدم (GUI) الخاصة بالسكريبت داخل دلتا
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "PlantumExecutorGUI"
+ScreenGui.Parent = game:CoreGui
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 220, 0, 260)
+MainFrame.Position = UDim2.new(0.05, 0, 0.3, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true -- تفعيل سحب الواجهة في دلتا
+MainFrame.Parent = ScreenGui
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundColor3 = Color3.fromRGB(0, 80, 0)
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Text = "أكاديمية بلانتوم - Delta"
+Title.TextScaled = true
+Title.Font = Enum.Font.SourceSansBold
+Title.Parent = MainFrame
+
+-- زر 1: جمع الدروب الجوي وحل المسألة
+local DropBtn = Instance.new("TextButton")
+DropBtn.Size = UDim2.new(0.9, 0, 0, 50)
+DropBtn.Position = UDim2.new(0.05, 0, 0.2, 0)
+DropBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+DropBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+DropBtn.Text = "جمع الدروب وحل المسألة"
+DropBtn.TextScaled = true
+DropBtn.Parent = MainFrame
+
+DropBtn.MouseButton1Click:Connect(function()
+	local airdrop = Workspace:FindFirstChild("MilitaryAirDrop")
+	if airdrop then
+		HumanoidRootPart.CFrame = airdrop.CFrame
+		task.wait(0.5)
+		-- محاكاة الضغط على ProximityPrompt إن وجد
+		for _, v in pairs(airdrop:GetDescendants()) do
+			if v:IsA("ProximityPrompt") then
+				fireproximityprompt(v)
+			end
+		end
+		print("تم الانتقال للدروب وتفعيله!")
+	else
+		print("الدروب غير موجود حالياً في الخريطة.")
+	end
+end)
+
+-- زر 2: جمع الصناديق وإيصالها
+local CrateBtn = Instance.new("TextButton")
+CrateBtn.Size = UDim2.new(0.9, 0, 0, 50)
+CrateBtn.Position = UDim2.new(0.05, 0, 0.45, 0)
+CrateBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+CrateBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CrateBtn.Text = "أخذ الصناديق وتسليمها"
+CrateBtn.TextScaled = true
+CrateBtn.Parent = MainFrame
+
+CrateBtn.MouseButton1Click:Connect(function()
+	for _, obj in pairs(Workspace:GetDescendants()) do
+		if obj:IsA("ProximityPrompt") and (obj.ObjectText:find("صندوق") or obj.ObjectText:find("إمدادات")) then
+			HumanoidRootPart.CFrame = obj.Parent.CFrame
+			task.wait(0.3)
+			fireproximityprompt(obj)
+			print("تم التفاعل مع الصندوق!")
+		end
+	end
+end)
+
+-- زر 3: فتح باب الأمن السيبراني عبر اللابتوب
+local HackBtn = Instance.new("TextButton")
+HackBtn.Size = UDim2.new(0.9, 0, 0, 50)
+HackBtn.Position = UDim2.new(0.05, 0, 0.7, 0)
+HackBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 200)
+HackBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+HackBtn.Text = "اختراق اللابتوب وباب السايبر"
+HackBtn.TextScaled = true
+HackBtn.Parent = MainFrame
+
+HackBtn.MouseButton1Click:Connect(function()
+	-- البحث عن ايفنت الهكر أو الباب وتفعيله
+	local events = game:GetService("ReplicatedStorage"):FindFirstChild("PlantumEvents")
+	if events and events:FindFirstChild("CyberHack") then
+		events.CyberHack:FireServer(true)
+		print("تم إرسال أمر اختراق الباب بنجاح عبر السكريبت!")
+	else
+		-- محاولة فتح الباب مباشرة إذا كان متاحاً للعميل
+		local door = Workspace:FindFirstChild("CyberDoor")
+		if door then
+			door.CanCollide = false
+			door.Transparency = 0.7
+			print("تم تجاوز باب الأمن السيبراني محلياً!")
+		else
+			print("لم يتم العثور على الباب أو الحدث المرتبط باللابتوب.")
+		end
+	end
+end)
